@@ -25,9 +25,11 @@ provider:
     createdBy: Douglas Petla
 
 functions:
-  hello:
-    handler: handler.hello
+  index:
+    handler: index.handler
     events:
       - http:
-          method: get
-          path: hello
+          path: /{any+}
+          method: ANY
+          cors:
+            origin: "*"
