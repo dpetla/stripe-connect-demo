@@ -1,8 +1,7 @@
 service:
-  name: server
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+  name: stripe-connect-demo-server
+  app: stripe-connect-demo-server
+  org: rangle.io
 
 custom:
   webpack:
@@ -21,6 +20,9 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+  tag:
+    project: stripe-connect-demo-server
+    createdBy: Douglas Petla
 
 functions:
   hello:
