@@ -7,6 +7,8 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  serverless-offline:
+    httpPort: 4242
 
 # Add the serverless-webpack plugin
 plugins:
@@ -23,6 +25,18 @@ provider:
   tag:
     project: stripe-connect-demo-server
     createdBy: Douglas Petla
+  aimRoleStatement:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        Fn::GetAtt:
+          - UsersTable
 
 functions:
   index:
@@ -33,3 +47,24 @@ functions:
           method: ANY
           cors:
             origin: "*"
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: users-connect
+        AttributeDefinitions:
+          - AttributeName: connected_account_id
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        # BillingMode: PAY_PER_REQUEST
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
